@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+         http://www.springframework.org/schema/task
+         http://www.springframework.org/schema/task/spring-task-3.1.xsd 
+         http://www.springframework.org/schema/mvc
+         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
+	<!-- HessianServiceExporter是继承HttpRequestHandler接口的，需要HttpRequestHandlerAdapter来处理这种请求。 -->
+	<bean id="httpRequestHandlerAdapter"
+		class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter" />
+	<!-- 当<bean>的name属性以/开头的时候，映射为url请求 -->
+	<bean id="defaultHandlerMapping"
+		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+	<!-- 服务接口暴漏 -->
+	<!-- <bean id="myServer" class="com.edt.hessian.impl.MyServerImpl" /> <bean 
+		name="/rpc/myServer" class="org.springframework.remoting.caucho.HessianServiceExporter"> 
+		<property name="service" ref="myServer" /> <property name="serviceInterface" 
+		value="com.edt.hessian.MyServer" /> </bean> -->
+	<!-- 客户端调用远程服务 -->
+	<!-- <bean id="taskService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean"> 
+		<property name="serviceUrl" value="http://192.168.1.33:8080/tp/rpc/taskService" 
+		/> <property name="serviceInterface" value="com.touchpoint.service.TaskService" 
+		/> <property name="overloadEnabled" value="true"></property> </bean> -->
+</beans>

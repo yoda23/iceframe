@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.SmsValidateCodeDao">
+    <resultMap type="com.edt.entity.SmsValidateCode" id="SmsValidateCodeMap">
+        <id property="id" column="id"/>
+        <result property="phone" column="phone"/>
+        <result property="code" column="code"/>
+        <result property="validtime" column="validtime"/>
+    </resultMap>
+    <insert id="saveSmsValidateCode" parameterType="SmsValidateCode">
+        INSERT INTO
+            base_validatecode (id, phone, code, validtime)
+        VALUES (#{id}, #{phone}, #{code}, #{validtime})
+    </insert>
+    <update id="updateSmsValidateCode" parameterType="SmsValidateCode">
+        UPDATE
+            base_validatecode
+        SET code = #{code}, validtime = #{validtime}
+        WHERE phone
+              = #{phone}
+    </update>
+    <select id="getSmsValidateCodeByPhone" parameterType="String"
+            resultMap="SmsValidateCodeMap">
+        SELECT
+            phone,
+            code,
+            validtime
+        FROM base_validatecode
+        WHERE phone
+              = #{phone}
+    </select>
+</mapper>

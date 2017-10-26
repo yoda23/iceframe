@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.MenuDao">
+	<resultMap type="com.edt.entity.Menu" id="MenuMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="parentId" column="parent_id" />
+		<result property="openUrl" column="open_url" />
+	</resultMap>
+	<select id="getListMenu" resultMap="MenuMap">
+		select
+		menu.id,menu.name,menu.parent_id,open_url from
+		base_menu_info menu
+	</select>
+	<insert id="saveMenu" parameterType="Menu">
+		insert into
+		base_menu_info(id,name,parent_id,open_url)
+		values(#{id},#{name},#{parentId},#{openUrl})
+	</insert>
+	<delete id="deleteAllMenu">
+		delete from base_menu_info
+	</delete>
+</mapper>

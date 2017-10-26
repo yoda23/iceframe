@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.LogDao">
+	<resultMap type="com.edt.entity.Log" id="logMap">
+		<id property="logId" column="id" />
+		<result property="logMenu" column="log_menu" />
+		<result property="logOperation" column="log_operation" />
+		<result property="logContent" column="log_content" />
+		<result property="logUser" column="log_user" />
+		<result property="logTime" column="log_time" />
+	</resultMap>
+	<insert id="insertLog" parameterType="Log">
+		insert into
+		base_log_info(id,log_menu,log_operation,log_content,log_user,log_time)
+		values(#{logId},#{logMenu},#{logOperation},#{logContent},#{logUser},#{logTime})
+	</insert>
+</mapper>

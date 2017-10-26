@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.RoleDao">
+    <resultMap type="com.edt.entity.Role" id="RoleMap">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="reMark" column="remark"/>
+        <result property="addTime" column="addtime"/>
+        <result property="addUser" column="adduser"/>
+        <association property="user" javaType="com.edt.entity.User">
+            <id property="id" column="id"/>
+            <result property="roleId" column="role_id"/>
+            <result property="mechanismsId" column="mechanisms_id"/>
+            <result property="loginId" column="login_id"/>
+            <result property="loginPassword" column="login_password"/>
+            <result property="name" column="user_name"/>
+            <result property="active" column="active"/>
+            <result property="find" column="find"/>
+            <result property="deleteFlag" column="delete_flag"/>
+            <result property="addTime" column="addtime"/>
+            <result property="addUser" column="adduser"/>
+        </association>
+    </resultMap>
+    <resultMap type="com.edt.entity.Role" id="roleMenuRightsMap" extends="RoleMap">
+        <collection property="listMenu" ofType="com.edt.entity.Menu">
+            <id property="id" column="menu_id"/>
+            <result property="name" column="menu_name"/>
+            <result property="parentId" column="parent_id"/>
+            <result property="openUrl" column="open_url"/>
+        </collection>
+        <collection property="listRights" ofType="com.edt.entity.Rights">
+            <id property="id" column="rights_id"/>
+            <result property="name" column="rights_name"/>
+            <result property="parentId" column="parent_id"/>
+        </collection>
+    </resultMap>
+    <select id="getRoleByCondition" parameterType="FindCondition"
+            resultMap="RoleMap">
+        SELECT r.id,r.name,r.remark,r.addtime,r.adduser,u.name as user_name
+        FROM
+        base_role_info r
+        LEFT JOIN base_user_info u on r.adduser = u.id
+        WHERE 1=1
+        <if test="roleName != null">
+            and r.name like CONCAT('%',CONCAT(#{roleName},'%'))
+        </if>
+        order by r.addtime,r.name desc
+    </select>
+    <insert id="saveRole" parameterType="Role">
+        INSERT INTO
+            base_role_info (id, name, remark, addtime, adduser)
+        VALUES (#{id}, #{name}, #{reMark}, #{addTime}, #{addUser})
+    </insert>
+    <select id="getRoleByName" parameterType="String" resultMap="RoleMap">
+        SELECT
+            r.id,
+            r.name,
+            r.remark
+        FROM base_role_info r
+        WHERE r.name = #{name}
+    </select>
+    <select id="getRoleById" parameterType="String" resultMap="RoleMap">
+        SELECT
+            r.id,
+            r.name,
+            r.remark
+        FROM base_role_info r
+        WHERE r.id = #{id}
+    </select>
+    <update id="updateRole" parameterType="Role">
+        UPDATE base_role_info
+        SET
+            name   = #{name},
+            remark = #{reMark}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteRole" parameterType="Role">
+        DELETE FROM base_role_info
+        WHERE id = #{id}
+    </delete>
+    <select id="getRoleByIdForMenu" parameterType="String"
+            resultMap="roleMenuRightsMap">
+        SELECT
+            r.id,
+            r.name,
+            r.remark,
+            menu.id   AS menu_id,
+            menu.parent_id,
+            menu.name AS menu_name,
+            menu.open_url
+        FROM base_role_info
+             r
+            LEFT JOIN base_role_menu rm ON r.id = rm.role_id
+            LEFT JOIN
+            base_menu_info menu ON rm.menu_id = menu.id
+        WHERE r.id = #{id}
+        ORDER BY
+            menu.id
+    </select>
+    <select id="getRoleByIdForRights" parameterType="String"
+            resultMap="roleMenuRightsMap">
+        SELECT
+            r.id,
+            r.name,
+            r.remark,
+            rights.id        AS rights_id,
+            rights.name      AS rights_name,
+            rights.parent_id AS rights_parent_id
+        FROM
+            base_role_info r
+            LEFT JOIN base_role_rights rr ON r.id = rr.role_id
+            LEFT JOIN base_rights_info rights ON rr.rights_id = rights.id
+        WHERE
+            r.id = #{id}
+        ORDER BY rights.id
+    </select>
+    <select id="getRoleByNoRowsByAll" resultMap="RoleMap">
+        SELECT
+            r.id,
+            r.name,
+            r.remark
+        FROM base_role_info r
+    </select>
+    <insert id="saveRoleMenuLinked" parameterType="RoleMenuLinked">
+        INSERT INTO
+            base_role_menu (role_id, menu_id) VALUES (#{role.id}, #{menu.id})
+    </insert>
+    <insert id="saveRoleRightsLinked" parameterType="RoleRightsLinked">
+        INSERT INTO
+            base_role_rights (role_id, rights_id) VALUES (#{role.id}, #{rights.id})
+    </insert>
+    <delete id="deleteRoleMenuLinked" parameterType="RoleMenuLinked">
+        DELETE FROM
+            base_role_menu
+        WHERE role_id = #{role.id}
+    </delete>
+    <delete id="deleteRoleRightsLinked" parameterType="RoleRightsLinked">
+        DELETE FROM
+            base_role_rights
+        WHERE role_id = #{role.id}
+    </delete>
+    <delete id="deleteAllRole">
+        DELETE FROM base_role_info
+    </delete>
+    <delete id="deleteAllRoleMenuLinked" parameterType="RoleMenuLinked">
+        DELETE FROM
+            base_role_menu
+    </delete>
+    <delete id="deleteAllRoleRightsLinked" parameterType="RoleRightsLinked">
+        DELETE FROM
+            base_role_rights
+    </delete>
+</mapper>

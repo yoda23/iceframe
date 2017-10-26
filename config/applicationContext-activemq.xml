@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amp="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
+    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://192.168.1.218:61616"/>
+        <!--序列化白名单-->
+        <property name="trustAllPackages" value="true"/>
+    </bean>
+    <!--连接池-->
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.jms.pool.PooledConnectionFactory">
+        <property name="connectionFactory" ref="targetConnectionFactory"/>
+        <property name="maxConnections" value="100"/>
+    </bean>
+    <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <property name="targetConnectionFactory" ref="pooledConnectionFactory"/>
+    </bean>
+    <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+    <bean id="jmsTemplateTopic" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!--配置队列-->
+        <property name="defaultDestination" ref="queueDestinationTopic"/>
+    </bean>
+    <bean id="jmsTemplatePoint" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <!--配置队列-->
+        <property name="defaultDestination" ref="queueDestinationPoint"/>
+    </bean>
+    <!--***********************************队列配置***********************************-->
+    <!--点对点队列-->
+    <bean id="queueDestinationPoint" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="queuePoint"/>
+    </bean>
+    <!--发布/订阅队列-->
+    <bean id="queueDestinationTopic" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="queueTopic"/>
+    </bean>
+    <!--***********************************消息监听器***********************************-->
+    <!--消息监听器-->
+    <bean id="messageListenerPoint" class="com.edt.service.component.mq.messageListenerPoint"/>
+    <!-- 消息监听容器 -->
+    <bean id="jmsContainerPoint"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="queueDestinationPoint"/>
+        <property name="messageListener" ref="messageListenerPoint"/>
+    </bean>
+    <!--消息监听器-->
+    <bean id="messageListenerTopic" class="com.edt.service.component.mq.messageListenerTopic"/>
+    <!-- 消息监听容器 -->
+    <bean id="jmsContainerTopic"
+          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="queueDestinationTopic"/>
+        <property name="messageListener" ref="messageListenerTopic"/>
+    </bean>
+</beans>

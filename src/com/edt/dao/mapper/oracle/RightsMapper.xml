@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.RightsDao">
+    <resultMap type="com.edt.entity.Rights" id="RightsMap">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="parentId" column="parent_id"/>
+    </resultMap>
+    <select id="getListRights" resultMap="RightsMap">
+        SELECT
+            id,
+            name,
+            parent_id
+        FROM base_rights_info
+    </select>
+    <insert id="saveRights" parameterType="Rights">
+        INSERT INTO
+            base_rights_info (id, name, parent_id)
+        VALUES (#{id}, #{name}, #{parentId})
+    </insert>
+    <delete id="deleteAllRights">
+        DELETE FROM base_rights_info
+    </delete>
+</mapper>

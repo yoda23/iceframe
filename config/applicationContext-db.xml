@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+         http://www.springframework.org/schema/task
+         http://www.springframework.org/schema/task/spring-task-3.1.xsd
+         http://www.springframework.org/schema/mvc
+         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
+    <!-- 数据库连接池配置 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.xa.DruidXADataSource"
+          init-method="init" destroy-method="close">
+        <!-- MYSQL -->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url"
+        value="jdbc:mysql://localhost:3306/demo?autoReconnect=true&amp;
+        useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;
+        transformedBitIsBoolean=true&amp;allowMultiQueries=true&amp;rewriteBatchedStatements&amp;useSSL=false"/>
+        <!-- oracle -->
+        <!--<property name="driverClassName" value="oracle.jdbc.OracleDriver"/>-->
+        <!--<property name="url" value="jdbc:oracle:thin:@192.168.3.90:1521:dhdh114"/>-->
+        <!--<property name="url" value="jdbc:oracle:thin:@192.168.3.218:1521:orcl"/>-->
+        <!-- 用户名密码 -->
+        <!--<property name="username" value="root"/>-->
+        <!--<property name="password" value="liugang"/>-->
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="15"/>
+        <property name="minIdle" value="10"/>
+        <property name="maxActive" value="500"/>
+        <!-- 获取连接时最大等待时间(以毫秒为单位) -->
+        <property name="maxWait" value="5000"/>
+        <!-- 验证连接有效与否的SQL，不同的数据配置不同 -->
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL"/>
+        <!--间隔多久执行一次连接有效检查,单位秒-->
+        <property name="validationQueryTimeout" value="3600"/>
+        <!--<property name="validationQuery" value="SELECT 1"/>-->
+        <!-- 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，
+        执行validationQuery检测连接是否有效。 -->
+        <property name="testWhileIdle" value="true"/>
+        <!-- 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
+        <property name="testOnBorrow" value="false"/>
+        <!-- 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能 -->
+        <property name="testOnReturn" value="false"/>
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <!-- oracle：强烈建议oracle打开此配置，会有很大性能提升 -->
+        <!-- mysql：5.5以前的版本建议关闭，其他版本建议打开，会有性能提升 -->
+        <property name="poolPreparedStatements" value="false"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="-1"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <!-- 是否自动回收超时连接 -->
+        <!--<property name="removeAbandoned" value="true"/>-->
+        <!-- 超时时间(以秒数为单位)180秒=3分钟 -->
+        <!--<property name="removeAbandonedTimeout" value="180"/>-->
+        <!-- 是否在自动回收超时连接的时候打印连接的超时错误 -->
+        <!--<property name="logAbandoned" value="true"/>-->
+        <!-- 配置监控统计拦截的filters -->
+        <!--<property name="filters" value="stat,log4j2"/>-->
+        <!-- 监控数据库 -->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+                <ref bean="wall-filter"/>
+                <ref bean="log-filter"/>
+            </list>
+        </property>
+    </bean>
+    <!-- sql统计监控 -->
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <!-- 慢sql语句时间，小于此时间的sql语句会自动输出到日志中(单位毫秒) -->
+        <property name="slowSqlMillis" value="10000"/>
+        <!-- 是否开启慢sql语句打印功能 -->
+        <property name="logSlowSql" value="true"/>
+        <!-- 合并相同sql语句日志 -->
+        <property name="mergeSql" value="true"/>
+    </bean>
+    <!-- sql语句监控日志 -->
+    <bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4j2Filter">
+        <property name="statementExecutableSqlLogEnable" value="false"/>
+        <property name="resultSetLogEnabled" value="false"/>
+    </bean>
+    <!-- sql防火墙监控 -->
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="dbType" value="mysql"/>
+        <property name="logViolation" value="true"/>
+        <property name="throwException" value="true"/>
+        <property name="config" ref="wall-config"/>
+    </bean>
+    <bean id="wall-config" class="com.alibaba.druid.wall.WallConfig">
+        <!-- 开启批量语句的预处理支持 -->
+        <property name="multiStatementAllow" value="true"/>
+    </bean>
+    <!-- druid的spring-AOP监控 -->
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut"
+          scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>com.edt.service.*</value>
+                <value>com.edt.dao.*</value>
+            </list>
+        </property>
+    </bean>
+    <aop:config>
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut"/>
+    </aop:config>
+    <!--************************************************************************************************* -->
+    <bean id="atomikosDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init"
+          destroy-method="close">
+        <property name="uniqueResourceName" value="edt"/>
+        <property name="xaDataSource" ref="dataSource"/>
+    </bean>
+    <!-- 配置myBatis的sessionFactory -->
+    <bean id="sqlSessionFactory" name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          scope="prototype">
+        <property name="dataSource" ref="atomikosDataSource"/>
+        <property name="typeAliasesPackage" value="com.edt.entity"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!-- 自动扫描mapping.xml文件 -->
+        <!--<property name="mapperLocations"-->
+        <!--value="classpath*:com/edt/dao/mapper/mysql/*Mapper.xml"/>-->
+        <property name="mapperLocations" value="classpath*:com/edt/dao/mapper/mysql/*Mapper.xml"/>
+    </bean>
+    <!-- 指定spring的sqlSessionTemplate,使用时会自动注入即可 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.edt.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    <!--  atomikos事务管理器 -->
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+          init-method="init" destroy-method="close">
+        <description>UserTransactionManager</description>
+        <property name="forceShutdown" value="true"/>
+    </bean>
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300"/>
+    </bean>
+    <bean id="transactionManager"
+          class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomikosTransactionManager"/>
+        <property name="userTransaction" ref="atomikosUserTransaction"/>
+        <property name="allowCustomIsolationLevels" value="true"/>
+    </bean>
+    <!-- 将事务交给spring进行管理 -->
+    <!--<bean id="transactionManager"-->
+    <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+    <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
+    <!-- 开启事务控制的注解支持 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

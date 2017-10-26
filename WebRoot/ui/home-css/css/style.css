@@ -1,0 +1,13 @@
+#hig_t{
+	width:100%;
+	background:url(../img/img-001.png) center top 150px no-repeat;
+	background-size: 60%;
+}
+.hig_t-logo{
+	width:200px;
+	height: 200px;
+	background: url(../img/img-002.png);
+	position: fixed;
+	top:0px;
+	right: 30px;
+}

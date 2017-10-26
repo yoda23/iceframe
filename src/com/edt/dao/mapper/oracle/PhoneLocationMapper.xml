@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.PhoneLocationDao">
+    <resultMap type="com.edt.entity.PhoneLocation" id="PhoneLocationMap">
+        <id property="id" column="id"/>
+        <result property="prefix" column="prefix"/>
+        <result property="mobileType" column="mobile_type"/>
+        <result property="phoneHeader" column="phone_header"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="areaCode" column="area_code"/>
+        <result property="postCode" column="postcode"/>
+    </resultMap>
+    <select id="getPhoneLocationByHeader" parameterType="String"
+            resultMap="PhoneLocationMap">
+        SELECT
+            p.prefix,
+            p.mobile_type,
+            p.phone_header,
+            p.province,
+            p.city,
+            p.area_code,
+            p.postcode
+        FROM base_phone_location p
+        WHERE p.phone_header = #{header}
+    </select>
+    <select id="getPhoneLocationByAreaCode" parameterType="String"
+            resultMap="PhoneLocationMap">
+        SELECT
+            p.province,
+            p.city,
+            p.postcode
+        FROM base_phone_location p
+        WHERE p.area_code = #{areaCode}
+    </select>
+    <select id="getPhoneLocationByPostCode" parameterType="String"
+            resultMap="PhoneLocationMap">
+        SELECT
+            p.province,
+            p.city,
+            p.area_code
+        FROM base_phone_location p
+        WHERE p.postcode = #{postCode}
+    </select>
+    <select id="getPhoneLocationByCondition" parameterType="FindCondition"
+            resultMap="PhoneLocationMap">
+        select
+        p.id,p.prefix,p.mobile_type,p.phone_header,p.province,p.city,p.area_code,p.postcode
+        from base_phone_location p
+        where 1=1
+        <if test="phoneHeader != null">
+            and p.phone_header like CONCAT(#{phoneHeader},'%')
+        </if>
+        order by phone_header
+    </select>
+</mapper>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.MechanismsDao">
+    <resultMap type="com.edt.entity.Mechanisms" id="MechanismsMap">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="simpleName" column="simple_name"/>
+        <result property="principal" column="principal"/>
+        <result property="phone" column="phone"/>
+        <result property="addUser" column="addUser"/>
+        <result property="addTime" column="addTime"/>
+        <result property="parentName" column="parent_name"/>
+        <association property="user" javaType="User">
+            <id property="id" column="user_id"/>
+            <result property="name" column="user_name"/>
+        </association>
+    </resultMap>
+    <insert id="saveMechanisms" parameterType="Mechanisms">
+        INSERT INTO
+            base_mechanisms_info (
+                id,
+                parent_id,
+                parent_name,
+                name, code,
+                simple_name,
+                principal,
+                phone,
+                addUser,
+                addTime
+            )
+        VALUES
+            (
+                #{id},
+                #{parentId},
+                #{parentName},
+                #{name},
+                #{code},
+                #{simpleName},
+                #{principal},
+                #{phone},
+                #{addUser},
+                #{addTime}
+            )
+    </insert>
+    <update id="updateMechanisms" parameterType="String">
+        UPDATE
+            base_mechanisms_info
+        SET
+            parent_id   = #{parentId},
+            parent_name =
+            #{parentName},
+            name        = #{name},
+            code        =
+            #{code},
+            simple_name =
+            #{simpleName},
+            principal   = #{principal},
+            phone       =
+            #{phone}
+        WHERE id = #{id}
+    </update>
+    <update id="updateMechanismsByParentId" parameterType="String">
+        UPDATE
+            base_mechanisms_info
+        SET
+            parent_name = #{name}
+        WHERE parent_id = #{id}
+    </update>
+    <delete id="deleteMechanisms" parameterType="String">
+        DELETE
+        FROM
+            base_mechanisms_info
+        WHERE id IN (SELECT a.id
+                     FROM (SELECT id
+                           FROM base_mechanisms_info
+                           WHERE FIND_IN_SET(id, getChildList(#{id}))) a)
+    </delete>
+    <select id="getMechanismsByCode" parameterType="String"
+            resultMap="MechanismsMap">
+        SELECT
+            id,
+            parent_id,
+            parent_name,
+            name,
+            code,
+            simple_name,
+            principal,
+            phone,
+            adduser,
+            addtime
+        FROM
+            base_mechanisms_info
+        WHERE code =
+              #{code}
+    </select>
+    <select id="getMechanismsByName" parameterType="String"
+            resultMap="MechanismsMap">
+        SELECT
+            id,
+            parent_id,
+            parent_name,
+            name,
+            code,
+            simple_name,
+            principal,
+            phone,
+            adduser,
+            addtime
+        FROM
+            base_mechanisms_info
+        WHERE
+            name = #{name}
+    </select>
+    <select id="getMechanismsById" parameterType="String" resultMap="MechanismsMap">
+        SELECT
+            id,
+            parent_id,
+            parent_name,
+            name,
+            code,
+            simple_name,
+            principal,
+            phone,
+            adduser,
+            addtime
+        FROM
+            base_mechanisms_info
+        WHERE id = #{id}
+    </select>
+    <select id="getListMechanismByCondition" parameterType="FindCondition"
+            resultMap="MechanismsMap">
+        SELECT
+        m.id,
+        m.parent_id,
+        m.parent_name,
+        m.name,
+        m.code,
+        m.simple_name,
+        m.principal,
+        m.phone,
+        m.adduser,
+        m.addtime,
+        u.name as user_name
+        FROM
+        base_mechanisms_info m
+        left join base_user_info u ON m.adduser=u.id
+        where m.id in (SELECT id FROM base_mechanisms_info WHERE FIND_IN_SET(id, getChildList(#{mechanismsId})))
+        <if test="mechanismsName !=null">
+            and m.name like CONCAT('%',CONCAT(#{mechanismsName},'%'))
+        </if>
+        order by m.addtime
+    </select>
+    <delete id="deleteAllMechanisms">
+        DELETE FROM base_mechanisms_info
+    </delete>
+    <insert id="saveUserMechanismsLinked" parameterType="UserMechanismsLinked">
+        INSERT INTO
+            base_user_mechanisms_link (user_id, mechanisms_id) VALUES
+            (#{user.id}, #{mechanisms.id})
+    </insert>
+    <delete id="deleteUserMechanismsLinked" parameterType="String">
+        DELETE FROM base_user_mechanisms_link
+        WHERE mechanisms_id = #{mechanismsId}
+    </delete>
+    <select id="listMechanismsByUserId" parameterType="String"
+            resultMap="MechanismsMap">
+        SELECT
+            m.id,
+            m.parent_id,
+            m.parent_name,
+            m.name,
+            m.code,
+            m.simple_name,
+            m.principal,
+            m.phone,
+            m.adduser,
+            m.addtime
+        FROM
+            base_mechanisms_info m
+        WHERE m.id IN (SELECT mechanisms_id
+                       FROM base_user_mechanisms_link
+                       WHERE user_id = #{userId})
+    </select>
+    <select id="listMechanismsParentById" parameterType="String"
+            resultMap="MechanismsMap">
+        SELECT id
+        FROM base_mechanisms_info
+        WHERE FIND_IN_SET(id, getParentList(#{mechanismsId}))
+    </select>
+</mapper>

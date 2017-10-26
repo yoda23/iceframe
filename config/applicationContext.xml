@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+
+    <!-- SpringMVC注解驱动 -->
+    <mvc:annotation-driven/>
+    <!-- 自动扫描下面包的所有内容，自动注入Bean对象 -->
+    <context:component-scan base-package="com.edt.*"/>
+    <!-- 自定义异常处理 -->
+    <bean id="exceptionHandler" class="com.edt.exception.DefaultExceptionHandler"/>
+    <!-- 启动AOP支持 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!-- <bean id="logAOP" class="com.edt.aop.LogAOP" /> -->
+    <!--缓存配置-->
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+        <property name="shared" value="true"/>
+    </bean>
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcache"/>
+    </bean>
+    <!-- 启用缓存注解开关 -->
+    <cache:annotation-driven cache-manager="cacheManager"/>
+    <!-- 启动spring线程池支持 -->
+    <task:annotation-driven executor="threadPool"/>
+    <!--**************************************线程池配置**************************************-->
+    <!--1、 如果此时线程池中的数量小于corePoolSize，即使线程池中的线程都处于空闲状态，也要创建新的线程来处理被添加的任务。-->
+    <!--2、 如果此时线程池中的数量等于 corePoolSize，但是缓冲队列 workQueue未满，那么任务被放入缓冲队列。-->
+    <!--3、如果此时线程池中的数量大于corePoolSize，缓冲队列workQueue满，并且线程池中的数量小于maximumPoolSize，
+    建新的线程来处理被添加的任务。-->
+    <!--4、 如果此时线程池中的数量大于corePoolSize，缓冲队列workQueue满，并且线程池中的数量等于maximumPoolSize，那么通过
+    handler所指定的策略来处理此任务。也就是：处理任务的优先级为：核心线程corePoolSize、任务队列workQueue、最大线程 maximumPoolSize，
+    如果三者都满了，使用handler处理被拒绝的任务。-->
+    <!--5、 当线程池中的线程数量大于 corePoolSize时，如果某线程空闲时间超过keepAliveTime，线程将被终止。这样，线程池可以动态的调整池中的线程数。-->
+    <bean id="threadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name="corePoolSize" value="10"/>
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="30000"/>
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="300"/>
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name="queueCapacity" value="50"/>
+        <!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
+</beans>

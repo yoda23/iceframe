@@ -1,0 +1,145 @@
+@charset "UTF-8";
+/* 默认  */
+a {
+  color: #333333; }
+
+a:hover,
+a:focus,
+.maincolor,
+.maincolor a {
+  color: #148cf1; }
+
+/*顶部导航*/
+.navbar {
+  background: #3192b4; }
+
+.navbar-logo,
+.navbar-logo-m,
+.navbar-slogan,
+.navbar-userbar {
+  color: #ffffff; }
+
+/*logo 及 用户信息文字颜色*/
+.navbar-logo:hover,
+.navbar-logo-m:hover {
+  color: #ffffff;
+  text-decoration: none; }
+
+.navbar-nav > ul > li,
+.navbar-nav > ul > li > a {
+  color: #ffffff; }
+
+/*顶部导航文字颜色*/
+.navbar-userbar > ul > > li,
+.navbar-userbar > ul > > li > a {
+  color: #ffffff; }
+
+/*侧边栏*/
+.Hui-aside {
+  border-top: 1px solid #2a7e9c;
+  padding-top: 0;
+  background-color: #3399bc;
+  background: -webkit-linear-gradient(205deg, #3399bc 60%, #9DCFE2);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(205deg, #3399bc 60%, #9DCFE2);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(205deg, #3399bc 60%, #9DCFE2);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient(205deg, #3399bc 60%, #9DCFE2);
+  /* 标准的语法 */ }
+
+.Hui-aside .menu_dropdown dl {
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative; }
+
+.Hui-aside .menu_dropdown dt {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  position: relative; }
+
+.Hui-aside .menu_dropdown dt:hover,
+.Hui-aside .menu_dropdown .selected {
+  color: #f2be35;
+  border-left: 3px solid #f2be35;
+  background-color: rgba(255, 255, 255, 0.1); }
+
+.Hui-aside .menu_dropdown dt.selected .menu_dropdown-arrow {
+  color: #f2be35; }
+
+/*左侧二级导航菜单*/
+.Hui-aside .menu_dropdown dd ul {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0; }
+
+.Hui-aside .menu_dropdown dd li a {
+  padding-left: 42px;
+  line-height: 37px;
+  color: #ffffff; }
+
+.Hui-aside .menu_dropdown li a:hover {
+  color: #148cf1;
+  background-color: rgba(0, 0, 0, 0.2); }
+
+.Hui-aside .menu_dropdown li.current a,
+.menu_dropdown li.current a:hover {
+  color: #148cf1; }
+
+.Hui-aside .menu_dropdown dt .Hui-iconfont {
+  margin-right: 5px; }
+
+.Hui-aside .menu_dropdown li .menu_dropdown-arrow {
+  color: #b6b7b8; }
+
+.Hui-aside .menu_dropdown li.active .menu_dropdown-arrow {
+  transform: rotate(180deg); }
+
+/* 收缩按钮 */
+.dislpayArrow a {
+  top: 50px;
+  margin-top: 0;
+  height: 20px;
+  left: 12px; }
+
+/* 内容区 */
+.Hui-tabNav .acrossTab li {
+  background: none;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  margin-right: 2px; }
+
+.Hui-tabNav .acrossTab li em {
+  background: none; }
+
+.acrossTab li.active {
+  background-color: #fff; }
+
+.Hui-tabNav .acrossTab {
+  top: 3px;
+  margin-left: 40px; }
+
+.Hui-tabNav-wp,
+.Hui-tabNav {
+  height: 30px; }
+
+.Hui-article {
+  top: 32px; }
+
+/* table */
+.table-bg thead th {
+  background-color: #eef1f8; }
+
+.table-bg tr:hover {
+  background-color: #feffed; }
+
+.Hui-tabNav {
+  background: #eff2f9;
+  border-bottom: 1px solid #d6dae5; }
+
+/* tabBar */
+.tabBar {
+  border-bottom: 2px solid #3399bc; }
+
+.tabBar span.current {
+  background-color: #3399bc; }
+

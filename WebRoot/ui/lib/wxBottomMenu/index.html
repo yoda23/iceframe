@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>仿微信自定义菜单导航JS特效代码 - JS代码网</title>
+<meta name="keywords" content="微信自定义菜单特效,底部导航菜单特效,向上导航菜单特效" />
+<meta name="description" content="JS代码网提供高质量的JS代码,导航菜单特效代码学习和下载" />
+<link rel="stylesheet" type="text/css" href="menu.css" media="all">
+</head>
+
+ <body>
+ 
+<div class="bg"><img src="imgs/home-default17.jpg" width="100%" height="100%"></div>
+
+<div class="nav4">
+
+	<nav>
+		<div id="nav4_ul" class="nav_4">
+			<ul class="box">
+				<li>
+					<a href="javascript:;" class=""><span>关于我们</span></a>
+					<dl>
+						<dd><a href="#"><span>电话</span></a></dd>
+						<dd><a href="#"><span>地址</span></a></dd>
+						<dd><a href="#"><span>在线客服</span></a></dd>
+						<dd><a href="#"><span>在线QQ</span></a></dd>
+					</dl>
+				</li>
+				<li>
+					<a href="javascript:;" class=""><span>电商</span></a>
+					<dl>
+						<dd><a href="#"><span>微信会员卡</span></a></dd>
+						<dd><a href="#"><span>微社区</span></a></dd>
+						<dd><a href="#"><span>微投票</span></a></dd>
+						<dd><a href="#"><span>微调研</span></a></dd>
+					</dl>
+				</li>
+				<li>
+					<a href="javascript:;" class="on"><span>会员专区</span></a>
+					<dl>
+						<dd><a href="#"><span>微商城</span></a></dd>
+						<dd><a href="#"><span>微餐饮</span></a></dd>
+						<dd><a href="#"><span>微团购</span></a></dd>
+						<dd><a href="#"><span>微汽车</span></a></dd>
+					</dl>
+				</li>
+			
+			</ul>
+		</div>
+	</nav>
+	
+	<div id="nav4_masklayer" class="masklayer_div on">&nbsp;</div>
+
+</div>
+
+<script src="nav4.js"></script>
+<script type="text/javascript">
+nav4.bindClick(document.getElementById("nav4_ul").querySelectorAll("li>a"), document.getElementById("nav4_masklayer"));
+</script>		
+																
+</body>
+</html>
+

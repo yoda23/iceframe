@@ -1,0 +1,4 @@
+var regionTable;
+$(function() {
+	initRegionTable();
+});

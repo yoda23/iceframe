@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+         http://www.springframework.org/schema/task
+         http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+    <!-- 时间规则详见com.edt.quartz.Quartz注释 -->
+    <bean id="quartz" class="com.edt.quartz.Quartz"/>
+    <!-- 单任务执行器 -->
+    <task:scheduler id="singleScheduler" pool-size="1"/>
+    <!-- 多任务执行器 -->
+    <task:scheduler id="manyScheduler" pool-size="100"/>
+    <!--具体的定时器内容-->
+    <task:scheduled-tasks scheduler="singleScheduler">
+        <task:scheduled ref="quartz" method="quartz" cron="0 0 0 * * ?"/>
+    </task:scheduled-tasks>
+</beans>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.DictionaryDao">
+    <resultMap type="com.edt.entity.Dictionary" id="DictionaryMap">
+        <id property="dKey" column="dkey"/>
+        <result property="dValue" column="dvalue"/>
+    </resultMap>
+    <select id="getDictionary" resultMap="DictionaryMap">
+        SELECT
+            d.dkey,
+            d.dvalue
+        FROM
+            base_dictionary_info d
+    </select>
+</mapper>
