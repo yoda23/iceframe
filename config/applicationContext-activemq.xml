@@ -11,9 +11,9 @@
         http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
         http://activemq.apache.org/schema/core
         http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
-    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
+     <!--真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
     <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://192.168.1.218:61616"/>
+        <property name="brokerURL" value="tcp://192.168.3.54:61616"/>
         <!--序列化白名单-->
         <property name="trustAllPackages" value="true"/>
     </bean>
@@ -48,23 +48,23 @@
     <bean id="queueDestinationTopic" class="org.apache.activemq.command.ActiveMQTopic">
         <constructor-arg value="queueTopic"/>
     </bean>
-    <!--***********************************消息监听器***********************************-->
-    <!--消息监听器-->
-    <bean id="messageListenerPoint" class="com.edt.service.component.mq.messageListenerPoint"/>
-    <!-- 消息监听容器 -->
-    <bean id="jmsContainerPoint"
-          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="connectionFactory"/>
-        <property name="destination" ref="queueDestinationPoint"/>
-        <property name="messageListener" ref="messageListenerPoint"/>
-    </bean>
-    <!--消息监听器-->
-    <bean id="messageListenerTopic" class="com.edt.service.component.mq.messageListenerTopic"/>
-    <!-- 消息监听容器 -->
-    <bean id="jmsContainerTopic"
-          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="connectionFactory"/>
-        <property name="destination" ref="queueDestinationTopic"/>
-        <property name="messageListener" ref="messageListenerTopic"/>
-    </bean>
+    <!--&lt;!&ndash;***********************************消息监听器***********************************&ndash;&gt;-->
+    <!--&lt;!&ndash;消息监听器&ndash;&gt;-->
+    <!--<bean id="messageListenerPoint" class="com.edt.service.component.mq.messageListenerPoint"/>-->
+    <!--&lt;!&ndash; 消息监听容器 &ndash;&gt;-->
+    <!--<bean id="jmsContainerPoint"-->
+          <!--class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
+        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
+        <!--<property name="destination" ref="queueDestinationPoint"/>-->
+        <!--<property name="messageListener" ref="messageListenerPoint"/>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;消息监听器&ndash;&gt;-->
+    <!--<bean id="messageListenerTopic" class="com.edt.service.component.mq.messageListenerTopic"/>-->
+    <!--&lt;!&ndash; 消息监听容器 &ndash;&gt;-->
+    <!--<bean id="jmsContainerTopic"-->
+          <!--class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
+        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
+        <!--<property name="destination" ref="queueDestinationTopic"/>-->
+        <!--<property name="messageListener" ref="messageListenerTopic"/>-->
+    <!--</bean>-->
 </beans>
