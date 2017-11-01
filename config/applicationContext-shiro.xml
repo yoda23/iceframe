@@ -26,6 +26,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 		<property name="filterChainDefinitions">
 			<value>
+				/tp/**=anon
+				/wx/**=anon
 				/druid/**=anon
 				/js/**=anon
 				/ui/**=anon

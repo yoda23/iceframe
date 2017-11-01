@@ -4,7 +4,10 @@ import com.edt.entity.Menu;
 import com.edt.entity.Role;
 import com.edt.entity.User;
 import com.iceutils.image.IceValidateImage;
+import com.iceutils.json.IceJsonStringUtils;
 import com.iceutils.random.IceValidateCodeUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +35,7 @@ public class IndexController {
 	@Resource
 	private HttpServletRequest httpServletRequest;
 	private List<IndexRoleMenu> listIndexRoleMenu = new ArrayList<IndexRoleMenu>();
+	Logger logger = LogManager.getLogger(IndexController.class);
 
 	/**
 	 * 系统登录页
@@ -50,8 +54,11 @@ public class IndexController {
 	 */
 	@RequestMapping("index")
 	public String index(Model model) {
+		logger.info("--------------index------------------");
 		listIndexRoleMenu.clear();
 		User user = (User) httpSession.getAttribute("USER");
+		logger.info(IceJsonStringUtils.toJsonString(user));
+		logger.info("---------------------------------");
 		if (user != null) {
 			Role role = user.getRole();
 			IndexRoleMenu indexRoleMenu = new IndexRoleMenu();
