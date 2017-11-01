@@ -22,7 +22,7 @@
         <!-- MYSQL -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url"
-        value="jdbc:mysql://localhost:3306/demo?autoReconnect=true&amp;
+        value="jdbc:mysql://47.95.116.7:3306/demo?autoReconnect=true&amp;
         useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;
         transformedBitIsBoolean=true&amp;allowMultiQueries=true&amp;rewriteBatchedStatements&amp;useSSL=false"/>
         <!-- oracle -->
@@ -33,7 +33,7 @@
         <!--<property name="username" value="root"/>-->
         <!--<property name="password" value="liugang"/>-->
         <property name="username" value="root"/>
-        <property name="password" value="123456"/>
+        <property name="password" value="liangAK$&amp;47"/>
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="15"/>
         <property name="minIdle" value="10"/>

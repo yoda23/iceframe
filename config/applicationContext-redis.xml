@@ -42,7 +42,7 @@
 	<bean id="jedisConnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
 		<property name="poolConfig" ref="jedisPoolConfig" />
-		<property name="hostName" value="192.168.3.54" />
+		<property name="hostName" value="47.95.116.7" />
 		<property name="port" value="6379" />
 		<property name="password" value="" />
         <property name="database" value="13" />

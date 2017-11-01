@@ -13,7 +13,7 @@
         http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
     <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
     <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="tcp://192.168.1.218:61616"/>
+        <property name="brokerURL" value="tcp://47.95.116.7:61616"/>
         <!--序列化白名单-->
         <property name="trustAllPackages" value="true"/>
     </bean>
