@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.edt.dao.TpDao">
 	<resultMap type="com.edt.entity.TpInfo" id="tpMap">
-	<!--	<id property="id" column="id" />-->
+		<id property="id" column="id" />
 		<result property="description" column="description" />
 		<result property="count" column="count" />
 	</resultMap>

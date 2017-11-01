@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.GzhDao">
+    <resultMap id="appInfoMap" type="com.edt.entity.AppInfo">
+        <id property="id" column="id" />
+        <result property="appId" column="appid" />
+        <result property="appSecret" column="appsecret" />
+        <result property="appName" column="appname" />
+        <result property="remark" column="remark" />
+        <result property="createDate" column="creatdate" />
+    </resultMap>
+    <insert id="saveAppInfo" parameterType="com.edt.entity.AppInfo">
+        INSERT INTO tp_appinfo(id,appid,appsecret,appname,remark,createdate) VALUES (#{id},#{appId},#{appSecret,#{appName},#{remark},#{createDate})
+    </insert>
+    <update id="updateAppInfo">
+        UPDATE  tp_appinfo SET  appid=#{appId},appsecret=#{appSecret},appName=#{appName},remark=#{remark} where id=#{id}
+    </update>
+    <select id="getAppInfoListByCondition" resultMap="appInfoMap">
+        SELECT  * FROM  tp_appinfo
+    </select>
+    <select id="getAppInfoById" resultMap="appInfoMap" parameterType="String">
+        SELECT  * from tp_appinfo where id=#{value}
+    </select>
+</mapper>
