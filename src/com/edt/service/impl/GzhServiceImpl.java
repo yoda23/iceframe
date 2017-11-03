@@ -5,6 +5,7 @@ import com.edt.common.bean.FindCondition;
 import com.edt.dao.GzhDao;
 import com.edt.entity.AppInfo;
 import com.edt.service.GzhService;
+import com.edt.service.WxService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ import java.util.List;
 public class GzhServiceImpl implements GzhService {
     @Resource
     GzhDao gzhDao;
+    @Resource
+    WxService wxService;
     @Override
     public List<AppInfo> getAppInfoListByCondition(FindCondition condition) {
         PageHelper.startPage(condition.getPage(), condition.getRows());
@@ -46,5 +49,14 @@ public class GzhServiceImpl implements GzhService {
     @Override
     public AppInfo getAppInfoById(String id) {
         return gzhDao.getAppInfoById(id);
+    }
+
+    @Override
+    public ActionResult setText(AppInfo appInfo, String text) {
+        wxService.senText(appInfo.getAppId(),appInfo.getAppSecret(),text);
+        ActionResult result = new ActionResult();
+        result.setMessage("提交群发成功");
+        result.setSuccess(true);
+        return result;
     }
 }

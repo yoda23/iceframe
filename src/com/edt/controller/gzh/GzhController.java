@@ -6,12 +6,14 @@ import com.edt.common.bean.ActionResult;
 import com.edt.common.bean.FindCondition;
 import com.edt.entity.AppInfo;
 import com.edt.service.GzhService;
+import com.iceutils.random.IceRandomUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +46,12 @@ public class GzhController extends BaseController {
     @RequestMapping("/saveAppInfo")
     @ResponseBody
     public void saveAppInfo(AppInfo appInfo){
+        appInfo.setId(IceRandomUtils.getLongUUID());
+        appInfo.setCreateDate(new Date());
         ActionResult result = gzhService.saveAppInfo(appInfo);
         WriterToPageByJsonNoNull(result);
     }
-    @RequestMapping("saveAppInfo")
+    @RequestMapping("/toupdateAppInfo")
     public String toUpdatePage(){
         String id = request.getParameter("id");
         AppInfo appInfo = gzhService.getAppInfoById(id);
@@ -59,6 +63,13 @@ public class GzhController extends BaseController {
     @ResponseBody
     public void updateAppInfo(AppInfo appInfo){
         ActionResult result = gzhService.updateAppInfo(appInfo);
+        WriterToPageByJsonNoNull(result);
+    }
+
+    @RequestMapping("/sendText")
+    @ResponseBody
+    public void sendText(AppInfo appInfo){
+        ActionResult result = gzhService.setText(appInfo,"sendText");
         WriterToPageByJsonNoNull(result);
     }
 }

@@ -50,21 +50,21 @@
     </bean>
     <!--***********************************消息监听器***********************************-->
     <!--消息监听器-->
-    <bean id="messageListenerPoint" class="com.edt.service.component.mq.messageListenerPoint"/>
+    <!--<bean id="messageListenerPoint" class="com.edt.service.component.mq.messageListenerPoint"/>-->
     <!-- 消息监听容器 -->
-    <bean id="jmsContainerPoint"
-          class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="connectionFactory"/>
-        <property name="destination" ref="queueDestinationPoint"/>
-        <property name="messageListener" ref="messageListenerPoint"/>
-    </bean>
+    <!--<bean id="jmsContainerPoint"-->
+          <!--class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
+        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
+        <!--<property name="destination" ref="queueDestinationPoint"/>-->
+        <!--<property name="messageListener" ref="messageListenerPoint"/>-->
+    <!--</bean>-->
     <!--消息监听器-->
-    <bean id="messageListenerTopic" class="com.edt.service.component.mq.messageListenerTopic"/>
+    <!--<bean id="messageListenerTopic" class="com.edt.service.component.mq.messageListenerTopic"/>-->
     <!-- 消息监听容器 -->
-    <bean id="jmsContainerTopic"
+  <!--  <bean id="jmsContainerTopic"
           class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="destination" ref="queueDestinationTopic"/>
         <property name="messageListener" ref="messageListenerTopic"/>
-    </bean>
+    </bean>-->
 </beans>

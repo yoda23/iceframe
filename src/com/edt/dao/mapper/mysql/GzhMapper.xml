@@ -7,10 +7,10 @@
         <result property="appSecret" column="appsecret" />
         <result property="appName" column="appname" />
         <result property="remark" column="remark" />
-        <result property="createDate" column="creatdate" />
+        <result property="createDate" column="createdate" />
     </resultMap>
     <insert id="saveAppInfo" parameterType="com.edt.entity.AppInfo">
-        INSERT INTO tp_appinfo(id,appid,appsecret,appname,remark,createdate) VALUES (#{id},#{appId},#{appSecret,#{appName},#{remark},#{createDate})
+        INSERT INTO tp_appinfo(id,appid,appsecret,appname,remark,createdate) VALUES (#{id},#{appId},#{appSecret},#{appName},#{remark},#{createDate})
     </insert>
     <update id="updateAppInfo">
         UPDATE  tp_appinfo SET  appid=#{appId},appsecret=#{appSecret},appName=#{appName},remark=#{remark} where id=#{id}

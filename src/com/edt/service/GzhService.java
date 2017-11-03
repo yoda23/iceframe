@@ -12,4 +12,5 @@ public interface GzhService {
     ActionResult saveAppInfo(AppInfo appInfo);
     ActionResult updateAppInfo(AppInfo appInfo);
     AppInfo getAppInfoById(String id);
+    ActionResult setText(AppInfo appInfo ,String text);
 }
