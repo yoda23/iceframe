@@ -37,10 +37,12 @@ public class WxValidateController extends BaseController {
         String sha1 = getSHA1("yoda", timestamp, nonce);
         logger.info("----------------signature:" + signature);
         logger.info("-------------sha1" + sha1);
+        logger.info(echostr);
+        logger.info(IceJsonStringUtils.toJsonString(request.getParameterMap()));
         if (signature.equals(sha1)) {
             logger.info("validate success!");
         }
-        WriterToPageByString(echostr);
+        WriterToPageByString(echostr == null ? "" : echostr);
     }
 
 
