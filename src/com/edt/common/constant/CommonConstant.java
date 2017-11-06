@@ -28,4 +28,8 @@ public class CommonConstant implements Serializable {
 	public final static String CONFIG_ERRORMSG = Config.mapConfig
 			.get("errormsg");
 
+	public final static String APPID_DEFAULT = "wx4575425ce2e4090b";
+	public final static String APPSECRET_DEFAULT = "2bdceffee6b0062019660289be552687";
+
+
 }
