@@ -6,6 +6,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:task="http://www.springframework.org/schema/task"
        xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
     http://www.springframework.org/schema/context
@@ -17,7 +18,9 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
     http://www.springframework.org/schema/task
-    http://www.springframework.org/schema/task/spring-task-3.1.xsd">
+    http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/websocket
+    http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <!-- SpringMVC注解驱动 -->
     <mvc:annotation-driven/>
@@ -63,4 +66,14 @@
             <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
         </property>
     </bean>
+
+    <websocket:handlers>
+        <websocket:mapping path="/springws/websocket" handler="demoWSHandler"/>
+        <websocket:handshake-interceptors>
+            <bean class="com.edt.websocket.interceptor.HandshakeInterceptor"/>
+        </websocket:handshake-interceptors>
+        <websocket:sockjs/>
+    </websocket:handlers>
+
+    <bean id="demoWSHandler" class="com.edt.websocket.handler.DemoWsHandler"/>
 </beans>
