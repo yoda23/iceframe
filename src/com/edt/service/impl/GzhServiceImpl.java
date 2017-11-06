@@ -53,7 +53,7 @@ public class GzhServiceImpl implements GzhService {
 
     @Override
     public ActionResult setText(AppInfo appInfo, String text) {
-        wxService.senText(appInfo.getAppId(),appInfo.getAppSecret(),text);
+        wxService.senTextToAllOpenId(appInfo.getAppId(),appInfo.getAppSecret(),text);
         ActionResult result = new ActionResult();
         result.setMessage("提交群发成功");
         result.setSuccess(true);

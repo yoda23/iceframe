@@ -2,6 +2,7 @@ package com.edt.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.edt.entity.OpenIdResult;
+import com.edt.entity.WxMenu;
 import com.edt.service.RedisService;
 import com.edt.service.WxService;
 import com.iceutils.json.IceJsonStringUtils;
@@ -52,7 +53,7 @@ public class WxServiceImpl implements WxService{
     }
 
     @Override
-    public void senText(String appId,String appScerat,String text) {
+    public void senTextToAllOpenId(String appId,String appScerat,String text) {
         String accessToken = getAccessToken(appId,appScerat);
         String url = "https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token="+accessToken;
         String json = "{" +
@@ -67,10 +68,40 @@ public class WxServiceImpl implements WxService{
 
         }
         json +=  "], \"msgtype\": \"text\"," +
-                "  \"text\": { \"content\": \"http://47.95.116.7/base/wx/testPatge\"}"+
+                "  \"text\": { \"content\":"+text+"}"+
                 "}";
 
         System.out.println(json);
         System.out.println(IceHttpUtils.doHttpPost(url,json,30000));
+    }
+
+    @Override
+    public String createMenu(String appId, String appSecret, WxMenu menu) {
+        String token = getAccessToken(appId,appSecret);
+        String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+token;
+        String json = "{" +
+                "     \"button\":[" +
+                "     {" +
+                "          \"type\":\"click\"," +
+                "          \"name\":\"今日歌曲\"," +
+                "          \"key\":\"V1001_TODAY_MUSIC\"" +
+                "      }," +
+                "      {" +
+                "           \"name\":\"菜单\"," +
+                "           \"sub_button\":[" +
+                "           {" +
+                "               \"type\":\"view\"," +
+                "               \"name\":\"搜索\"," +
+                "               \"url\":\"http://www.soso.com/\"" +
+                "            }," +
+                "            {" +
+                "               \"type\":\"click\"," +
+                "               \"name\":\"赞一下我们\"," +
+                "               \"key\":\"V1001_GOOD\"" +
+                "            }]" +
+                "       }]" +
+                " }";
+        System.out.println(json);
+        return IceHttpUtils.doHttpPost(url,json,30000);
     }
 }
