@@ -1,8 +1,12 @@
 package com.edt.quartz;
 
+import com.edt.service.RedisService;
+import com.edt.websocket.handler.DemoWsHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /*
  【秒】   【分】  【时】   【日】  【月】   【周】  【年】
@@ -26,8 +30,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Quartz {
 	private Logger logger = LogManager.getLogger(Quartz.class);
-
+	@Resource
+	private RedisService redisService;
+	@Resource(name = "demoWSHandler")
+	private DemoWsHandler handler;
 	public void quartz() {
-		logger.info("我是定时器");
+		int i = 0;
+		while(redisService.opsValue_get("key",Boolean.class)){
+			logger.info("我是定时器"+(++i));
+		}
 	}
 }

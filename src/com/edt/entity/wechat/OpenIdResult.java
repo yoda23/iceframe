@@ -1,12 +1,25 @@
-package com.edt.entity;
+package com.edt.entity.wechat;
 
-public class OpenIdResult {
+import java.io.Serializable;
+
+public class OpenIdResult implements Serializable{
+    private static final long serialVersionUID = 8420472526191503631L;
     private int totla;
     private int count;
     private OpenIdData data;
     private String next_openid;
+    private ErrorInfo errorInfo;
+
+    public ErrorInfo getErrorInfo() {
+        return errorInfo;
+    }
+
+    public void setErrorInfo(ErrorInfo errorInfo) {
+        this.errorInfo = errorInfo;
+    }
 
     public String getNext_openid() {
+
         return next_openid;
     }
 

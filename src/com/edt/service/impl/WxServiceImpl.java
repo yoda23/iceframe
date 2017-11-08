@@ -1,8 +1,8 @@
 package com.edt.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.edt.entity.OpenIdResult;
-import com.edt.entity.WxMenu;
+import com.edt.util.WeChatUtil;
+import com.edt.entity.wechat.OpenIdResult;
+import com.edt.entity.wechat.WxMenu;
 import com.edt.service.RedisService;
 import com.edt.service.WxService;
 import com.iceutils.json.IceJsonStringUtils;
@@ -46,9 +46,8 @@ public class WxServiceImpl implements WxService{
     @Override
     public List<String> getOpenIdList(String appId, String appScerat) {
         String accessToken = getAccessToken(appId,appScerat);
-        String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token="+accessToken+"&next_openid=";
-        String result = IceHttpUtils.doHttpGet(url);
-        OpenIdResult openIdResult = JSON.parseObject(result,OpenIdResult.class);
+        OpenIdResult openIdResult = WeChatUtil.getOpenIdList(accessToken,"");
+        System.out.println(IceJsonStringUtils.toJsonString(openIdResult));
         return openIdResult.getData().getOpenid();
     }
 

@@ -9,13 +9,14 @@
         var echo_websocket;
         function init() {
             output = document.getElementById("output");
-            echo_websocket = new SockJS("http://localhost:8823/iceframe/springws/websocket") ;   //初始化 websocket
+            echo_websocket = new SockJS("http://192.168.3.54:8823/iceframe/springws/websocket") ;   //初始化 websocket
             echo_websocket.onopen = function () {
                 console.log('Info: connection opened.');
             };
 
             echo_websocket.onmessage = function (event) {
                 console.log('Received: ' + event.data); //处理服务端返回消息
+                writeToScreen("Sent message: " + event.data);
             };
 
             echo_websocket.onclose = function (event) {
@@ -29,7 +30,6 @@
 
         function doSend(message) {
             echo_websocket.send(message);
-            writeToScreen("Sent message: " + message);
         }
         function writeToScreen(message) {
             var pre = document.createElement("p");

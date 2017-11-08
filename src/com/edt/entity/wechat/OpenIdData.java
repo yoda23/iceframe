@@ -1,4 +1,4 @@
-package com.edt.entity;
+package com.edt.entity.wechat;
 
 import java.util.List;
 

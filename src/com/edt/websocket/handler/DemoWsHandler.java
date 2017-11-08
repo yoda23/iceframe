@@ -2,11 +2,21 @@ package com.edt.websocket.handler;
 
 import org.springframework.web.socket.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DemoWsHandler implements WebSocketHandler {
+    private final  static List<WebSocketSession> sessionList;
+
+    static{
+        sessionList = new ArrayList<>();
+    }
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("connect to the websocket success......");
         session.sendMessage(new TextMessage("Server:connected OK!"));
+        sessionList.add(session);
     }
 
     @Override
@@ -33,5 +43,18 @@ public class DemoWsHandler implements WebSocketHandler {
     @Override
     public boolean supportsPartialMessages() {
         return false;
+    }
+
+
+    public void sendText(String text){
+        for (WebSocketSession session: sessionList) {
+            if(session.isOpen()){
+                try {
+                    session.sendMessage(new TextMessage(text));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

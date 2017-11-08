@@ -1,6 +1,6 @@
 package com.edt.service;
 
-import com.edt.entity.WxMenu;
+import com.edt.entity.wechat.WxMenu;
 
 import java.util.List;
 
