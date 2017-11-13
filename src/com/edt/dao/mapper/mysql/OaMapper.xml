@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.edt.dao.OaDao">
+    <resultMap id="signInfo" type="com.edt.entity.OASignInInfo">
+        <id property="id" column="id" />
+        <result property="signInName" column="singinname" />
+        <result property="signInDate" column="singinstate" />
+        <result property="startDate" column="startdate" />
+        <result property="endDate" column="enddate" />
+        <result property="signInDate" column="singindate" />
+        <result property="remark" column="remark" />
+        <result property="lateMinutes" column="lateminutes" />
+        <result property="addMinutes" column="addminutes" />
+        <result property="leaveMinutes" column="leaveminutes" />
+    </resultMap>
+    <insert id="saveSignInfo" parameterType="com.edt.entity.OASignInInfo">
+        INSERT INTO oa_signininfo(id,singinname,singinstate,startdate,enddate,singindate,remark,lateminutes,addminutes,leaveminutes)
+         VALUES (#{id},#{signInName},#{signInState},#{startDate},#{endDate},#{signInDate},#{remark},#{lateMinutes},#{addMinutes},#{leaveMinutes})
+    </insert>
+    <update id="updateSignInfo" parameterType="com.edt.entity.OASignInInfo">
+        UPDATE  oa_signininfo SET  singinname=#{signInName},singinstate=#{signInState},startdate=#{startDate},enddate=#{endDate} ,
+        singindate=#{signInDate},remark=#{remark},lateminutes=#{lateMinutes},addminutes=#{addMinutes},leaveminutes=#{leaveMinutes}
+        where id=#{id}
+    </update>
+    <select id="selectByCondition" resultMap="signInfo" parameterType="com.edt.common.bean.FindCondition">
+        SELECT  * FROM  oa_signininfo where 1=1
+        <if test="startTime != null">
+            and singinstate &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            and singinstate &lt;= #{endTime}
+        </if>
+        <if test="signInName != null">
+            and singinname like '%'|#{signInName}|'%'
+        </if>
+    </select>
+    <select id="selectById" resultMap="signInfo" parameterType="String">
+        SELECT  * from oa_signininfo where id=#{value}
+    </select>
+    <delete id="deleteSignInfoById" parameterType="String">
+        delete FROM oa_signininfo where id=#{value}
+    </delete>
+</mapper>

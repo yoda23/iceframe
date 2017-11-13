@@ -9,7 +9,7 @@
         var echo_websocket;
         function init() {
             output = document.getElementById("output");
-            echo_websocket = new SockJS("http://localhost:8823/iceframe/springws/websocket") ;   //初始化 websocket
+            echo_websocket = new SockJS("http://localhost:8080/iceframe/springws/websocket") ;   //初始化 websocket
             echo_websocket.onopen = function () {
                 console.log('Info: connection opened.');
             };

@@ -1,8 +1,11 @@
 package com.edt.quartz;
 
+import com.edt.websocket.handler.DemoWsHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /*
  【秒】   【分】  【时】   【日】  【月】   【周】  【年】
@@ -27,7 +30,10 @@ import org.springframework.stereotype.Component;
 public class Quartz {
 	private Logger logger = LogManager.getLogger(Quartz.class);
 
+	@Resource
+	private DemoWsHandler demoWsHandler;
 	public void quartz() {
 		logger.info("我是定时器");
+		demoWsHandler.sendMessageToUAll("我是定时器");
 	}
 }
