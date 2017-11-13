@@ -1,4 +1,6 @@
-package com.edt.entity;
+package com.edt.entity.wechat;
+
+import com.edt.entity.Log;
 
 import java.io.Serializable;
 
