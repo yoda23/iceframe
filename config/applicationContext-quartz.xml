@@ -14,6 +14,9 @@
     <task:scheduler id="manyScheduler" pool-size="100"/>
     <!--具体的定时器内容-->
     <task:scheduled-tasks scheduler="singleScheduler">
-        <task:scheduled ref="quartz" method="quartz" cron="0/10 * * * * ?"/>
+        <!--<task:scheduled ref="quartz" method="quartz" cron="0/10 * * * * ?"/>-->
+        <task:scheduled ref="quartz" method="changeTime" cron="57 28 0 * * ?"/>
     </task:scheduled-tasks>
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+    <bean id="testJob" class="com.edt.quartz.QuartzJobExample"></bean>
 </beans>

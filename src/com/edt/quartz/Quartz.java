@@ -1,8 +1,14 @@
 package com.edt.quartz;
 
+import com.edt.service.component.quartz.QuartzManager;
 import com.edt.websocket.handler.DemoWsHandler;
+import com.iceutils.json.IceJsonStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,11 +35,20 @@ import javax.annotation.Resource;
 @Component
 public class Quartz {
 	private Logger logger = LogManager.getLogger(Quartz.class);
+	@Resource
+	private Scheduler sche;
 
 	@Resource
 	private DemoWsHandler demoWsHandler;
 	public void quartz() {
 		logger.info("我是定时器");
 		demoWsHandler.sendMessageToUAll("我是定时器");
+	}
+
+	public void changeTime(){
+		String job_name = "jjjjjjj";
+		System.out.println("【系统启动】开始(每1秒输出一次)...");
+		QuartzManager.modifyJobTime(sche, job_name,"0 40 0 * * ?");
+		logger.info(IceJsonStringUtils.toJsonString(sche));
 	}
 }
