@@ -23,7 +23,7 @@
     http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <!-- SpringMVC注解驱动 -->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <!-- 自动扫描下面包的所有内容，自动注入Bean对象 -->
     <context:component-scan base-package="com.edt.*"/>
     <!-- 自定义异常处理 -->
@@ -76,4 +76,17 @@
     </websocket:handlers>
 
     <bean id="demoWSHandler" class="com.edt.websocket.handler.DemoWsHandler"/>
+    <!-- 第一步:  创建自定义日期转换规则 -->
+    <bean id="dateConvert" class="com.edt.common.DateConvert"/>
+
+    <!-- 第二步： 创建convertion-Service ，并注入dateConvert-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <ref bean="dateConvert"/>
+            </set>
+        </property>
+    </bean>
+    <!-- 第三步：注册处理器映射器/处理器适配器 ，添加conversion-service属性-->
+    <!--  <mvc:annotation-driven conversion-service="conversionService"/> -->
 </beans>

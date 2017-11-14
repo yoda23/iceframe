@@ -9,6 +9,16 @@ public class TpInfo extends Log implements Serializable{
     private String description;
     private int count;
 
+    public String getTpId() {
+        return tpId;
+    }
+
+    public void setTpId(String tpId) {
+        this.tpId = tpId;
+    }
+
+    private String tpId;
+
     public String getId() {
         return id;
     }

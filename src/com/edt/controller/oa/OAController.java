@@ -4,10 +4,14 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.edt.common.BaseController;
 import com.edt.common.bean.ActionResult;
 import com.edt.common.bean.FindCondition;
+import com.edt.common.constant.CommonConstant;
 import com.edt.entity.AppInfo;
 import com.edt.entity.OASignInInfo;
 import com.edt.service.GzhService;
 import com.edt.service.OaService;
+import com.iceutils.date.IceDateFormatUtils;
+import com.iceutils.date.IceDateOperationUtils;
+import com.iceutils.date.IceDateValueUtils;
 import com.iceutils.random.IceRandomUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +55,27 @@ public class OAController extends BaseController {
     public void saveSignInInfo(OASignInInfo info){
         info.setId(IceRandomUtils.getLongUUID());
         info.setSignInDate(new Date());
+        System.out.println(IceDateFormatUtils.dateToString(info.getStartDate(),"yyyy-MM-dd hh:mm:ss"));
         //TODO 算迟到 加班，请假 分钟
+        String onDateStr = IceDateFormatUtils.dateToString(new Date(),"yyyy-MM-dd")+" "+CommonConstant.STARTTIME+":00";
+        Date onDate = IceDateFormatUtils.stringToDate(onDateStr);
+        String offDateStr = IceDateFormatUtils.dateToString(new Date(),"yyyy-MM-dd")+" "+CommonConstant.ENDTIME+":00";
+        Date offDate = IceDateFormatUtils.stringToDate(offDateStr);
+        if(info.getSignInState() == CommonConstant.OA_SATTE_ZC && IceDateOperationUtils.betweenMinute(onDate,info.getStartDate()) > 0){
+            info.setLateMinutes(IceDateOperationUtils.betweenMinute(onDate,info.getStartDate()));
+        }
+        switch (info.getSignInState()){
+            case CommonConstant.OA_SATTE_ZC:
+                if(IceDateOperationUtils.betweenMinute(onDate,info.getStartDate()) > 0){
+                    info.setLateMinutes(IceDateOperationUtils.betweenMinute(onDate,info.getStartDate()));
+                }
+                break;
+            case CommonConstant.OA_SATTE_JB:
+                info.setAddMinutes(IceDateOperationUtils.betweenMinute(info.getStartDate(),info.getEndDate()));
+                break;
+//            case CommonConstant.OA_SATTE_QJ:
+//                info.setLeaveMinutes();
+        }
         ActionResult result = oaService.save(info);
         WriterToPageByJsonNoNull(result);
     }

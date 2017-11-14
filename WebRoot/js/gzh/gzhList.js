@@ -6,7 +6,7 @@ $(function() {
 	});
 
 });
-//添加运营商
+
 function gzhAdd() {
 	layer.open({
 		type : 2,

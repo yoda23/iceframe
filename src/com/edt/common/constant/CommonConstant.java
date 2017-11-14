@@ -1,6 +1,7 @@
 package com.edt.common.constant;
 
 import com.edt.common.bean.Config;
+import com.iceutils.date.IceDateOperationUtils;
 
 import java.io.Serializable;
 
@@ -31,5 +32,23 @@ public class CommonConstant implements Serializable {
 	public final static String APPID_DEFAULT = "wx4575425ce2e4090b";
 	public final static String APPSECRET_DEFAULT = "2bdceffee6b0062019660289be552687";
 
+	                  /*  <option value="0">正常上班</option>
+                        <option value="1">迟到</option>
+                        <option value="2">请假</option>
+                        <option value="3">休息</option>
+                        <option value="4">加班</option>*/
+
+	public final static  int OA_SATTE_ZC = 0;
+	public final static  int OA_SATTE_CD = 1;
+	public final static  int OA_SATTE_QJ = 2;
+	public final static  int OA_SATTE_XX = 3;
+	public final static  int OA_SATTE_JB = 4;
+
+	public final static String STARTTIME = "08:30";
+	public final static String ENDTIME = "05:30";
+	public final static int LATETIMES = 3;
+
+
+	public final static String FORMATE = "hh:mm";
 
 }
